@@ -1,0 +1,36 @@
+# Configuração central do IDS/IPS
+# mode:
+#   "detection"  -> apenas gera alertas (IDS)
+#   "prevention" -> gera alertas E bloqueia automaticamente (IPS)
+mode: detection
+
+# Interface de rede monitorada (confirme com `ip a`, ex.: enp0s3).
+interface: enp0s3
+
+# IPs do PRÓPRIO host protegido (a VM onde o sensor roda). Usados pela
+# regra de exfiltração para saber o que é tráfego "de saída".
+protected_ips:
+  - 192.168.56.10
+
+# IPs que nunca devem ser bloqueados (ex.: máquina de gerência, usuário
+# legítimo do laboratório). NÃO coloque o IP do atacante aqui.
+whitelist_ips:
+  - 127.0.0.1
+
+# Bloqueio (somente em modo prevention)
+block_duration_seconds: 600
+
+# Evita enxurrada de alertas repetidos para o mesmo (IP, regra).
+alert_cooldown_seconds: 30
+
+# Limiares de detecção (variar nos experimentos do TCC)
+detection_window_seconds: 10
+port_scan_threshold: 15          # portas distintas na janela
+brute_force_attempt_threshold: 10  # SYNs a porta sensível na janela
+flood_threshold_pps: 100         # pacotes/segundo de um mesmo IP
+exfil_threshold_bytes: 5000000   # bytes de saída para um destino na janela
+exfil_window_seconds: 30
+
+# Arquivos de saída
+log_file: logs/ids_ips.log
+metrics_file: logs/events.jsonl   # eventos estruturados para a avaliação
