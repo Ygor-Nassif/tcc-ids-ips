@@ -50,7 +50,7 @@ pip install -r requirements.txt
 python3 -m pytest tests -q
 ```
 
-## Decisões de projeto que valem citar no TCC
+## Decisões de projeto
 
 - **Separação detecção/decisão/resposta:** o modo é lido só pelo
   `DecisionEngine`; trocar de modo não altera o motor de detecção.
